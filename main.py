@@ -42,12 +42,16 @@ def get_current_music():
     }
 
     response = requests.get("https://api.spotify.com/v1/me/player/currently-playing",headers=headers)
-    curr_music = response.json()
-    icon = "⏺" if curr_music['is_playing'] else "⏸"
-    status = f"Сейчас слушает: {curr_music['item']['name']}__({curr_music['item']['artists'][0]['name']}) " \
+    try:
+
+         curr_music = response.json()
+         icon = "⏺" if curr_music['is_playing'] else "⏸"
+         status = f"Сейчас слушает: {curr_music['item']['name']}__({curr_music['item']['artists'][0]['name']}) " \
              f" {convertMillis(curr_music['progress_ms'])}/{convertMillis(curr_music['item']['duration_ms'])}" \
              f"{icon}" \
              f"&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;{curr_music['item']['external_urls']['spotify']}"
+    except:
+        status = "Сейчас ничего не слушает("
     return status
 
 def set_status():
